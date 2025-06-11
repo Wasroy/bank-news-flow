@@ -4,7 +4,7 @@ import { NewsItem, NewsTheme } from '../types/news';
 const themes: NewsTheme[] = [
   'Indicateurs économiques',
   'Citations ACPR',
-  ''Supervision & Régulation',
+  'Supervision & Régulation',
   'Actualité Secteur Assurance',
   'Actualité Secteur Banque',
   'Mutualité & Prévoyance',
