@@ -4,6 +4,8 @@ import { DocumentAnalysisClient, AzureKeyCredential } from '@azure/ai-form-recog
 import { AzureOpenAI } from 'openai';
 import dotenv from 'dotenv';
 import fs from 'node:fs';
+import puppeteer from 'puppeteer';
+import fastifyCors from '@fastify/cors';
 
 dotenv.config()
 const fastify = Fastify({
@@ -160,6 +162,23 @@ fastify.get('/process-pdfs', async (request, reply) => {
     }
 });
 
+fastify.post('/export', async (request, reply) => {
+    const { html } = request.body;
+    if (!html) {
+        reply.code(400).send({ error: "Missing 'html' in request body" });
+        return;
+    }
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.setContent(html, { waitUntil: 'networkidle0' });
+    const pdf = await page.pdf({ format: 'A4' });
+    await browser.close();
+
+    reply.header('Content-Type', 'application/pdf');
+    reply.header('Content-Disposition', 'attachment;filename="newsletter.pdf"');
+    reply.send(pdf);
+});
+
 // Start the server
 const start = async () => {
   try {
@@ -171,4 +190,10 @@ const start = async () => {
   }
 }
 
+// Register CORS before your routes
+await fastify.register(fastifyCors, {
+  origin: 'http://localhost:8080', // Allow your Vite frontend
+  methods: ['POST', 'GET'],        // Allow POST and GET
+  credentials: true                // If you need cookies/auth
+});
 start();
