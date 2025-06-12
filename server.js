@@ -125,7 +125,7 @@ async function processAllPdfs() {
 			expiresOn: new Date(new Date().valueOf() + 3600 * 1000)
 		});
 		
-		console.log(`📄 Processing: ${blob.name}`);
+		console.log(` Processing: ${blob.name}`);
 
 		try {
 			const text = await getTextFromPDF(sasUrl);
@@ -133,7 +133,7 @@ async function processAllPdfs() {
 			const metadata = await getMetadataFromText(cleanedText);
 			output.push({ file: blob.name, metadata: metadata });
 		} catch (err) {
-			console.error(`❌ Failed to process ${blob.name}:`, err.message);
+			console.error(`Failed to process ${blob.name}:`, err.message);
 			output.push({ file: blob.name, error: err.message });
 		}
 		
