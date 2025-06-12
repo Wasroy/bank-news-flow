@@ -81,7 +81,7 @@ const NewsCard = ({
             <Textarea
               value={editedContent}
               onChange={(e) => setEditedContent(e.target.value)}
-              className="min-h-[100px] resize-none"
+              className="min-h-[100px] resize-none text-base"
             />
             <div className="flex space-x-2">
               <Button size="sm" onClick={handleSaveEdit} className="flex items-center space-x-1">
@@ -95,7 +95,7 @@ const NewsCard = ({
             </div>
           </div>
         ) : (
-          <p className="text-gray-700 text-sm leading-relaxed line-clamp-4">
+          <p className="text-gray-700 text-base leading-relaxed line-clamp-4">
             {news.content}
           </p>
         )}
@@ -111,7 +111,7 @@ const NewsCard = ({
                 value={news.theme}
                 onValueChange={(value: NewsTheme) => onThemeChange?.(news.id, value)}
               >
-                <SelectTrigger className="w-full">
+                <SelectTrigger className="w-64 h-8 text-sm">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
