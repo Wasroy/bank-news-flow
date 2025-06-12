@@ -59,20 +59,36 @@ const NewsCard = ({
             {news.title}
           </CardTitle>
           <div className="flex flex-col items-end space-y-2">
-            <Badge className={`${THEME_COLORS[news.theme]} text-xs`}>
+            <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${THEME_COLORS[news.theme]}`}>
               {news.theme}
-            </Badge>
+            </span>
             {isAdmin && (
-              <Badge className={`${getStatusColor(news.status)} text-xs`}>
+              <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${getStatusColor(news.status)}`}>
                 {news.status === 'pending' ? 'En attente' : 
                  news.status === 'approved' ? 'Validé' : 'Rejeté'}
-              </Badge>
+              </span>
             )}
           </div>
         </div>
-        <p className="text-sm text-muted-foreground">
-          {new Date(news.createdAt).toLocaleDateString('fr-FR')}
-        </p>
+        
+        {/* Author and Source information */}
+        <div className="flex flex-col space-y-1 text-sm text-muted-foreground">
+          <div className="flex items-center space-x-4">
+            {news.author && (
+              <span>
+                <strong>Auteur:</strong> {news.author}
+              </span>
+            )}
+            {news.source && (
+              <span>
+                <strong>Source:</strong> {news.source}
+              </span>
+            )}
+          </div>
+          <p className="text-sm text-muted-foreground">
+            {new Date(news.createdAt).toLocaleDateString('fr-FR')}
+          </p>
+        </div>
       </CardHeader>
       
       <CardContent>
