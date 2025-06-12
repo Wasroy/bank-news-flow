@@ -162,27 +162,31 @@ fastify.get('/process-pdfs', async (request, reply) => {
 });
 
 fastify.post('/generate-news', async (request, reply) => {
-  try {
-    console.log('Starting generateNews.ts execution...');
-    await new Promise((resolve, reject) => {
-      exec('node scripts/generateNews.ts', (error, stdout, stderr) => {
-        if (error) {
-          console.error('Error executing generateNews.ts:', error);
-          reject(error);
-        } else {
-          console.log('generateNews.ts executed successfully.');
-          console.log(stdout);
-          resolve(stdout);
-        }
-      });
-    });
-
-    reply.send({ status: 'success', message: 'generateNews.ts executed successfully.' });
-  } catch (error) {
-    console.error('Error:', error);
-    reply.status(500).send({ status: 'error', message: 'Failed to execute generateNews.ts.' });
-  }
-});
+	try {
+	  console.log('Starting generateNews.ts execution...');
+	  await new Promise((resolve, reject) => {
+		exec('npx tsx scripts/generateNews.ts', (error, stdout, stderr) => {
+		  if (error) {
+			console.error('Error executing generateNews.ts:', error);
+			reject(error);
+		  } else {
+			console.log('generateNews.ts executed successfully.');
+			console.log(stdout);
+			resolve(stdout);
+		  }
+		});
+	  });
+  
+	  reply.send({ status: 'success', message: 'generateNews.ts executed successfully.' });
+	} catch (error) {
+	  console.error('Error:', error);
+	  reply.status(500).send({
+		status: 'error',
+		message: 'Failed to execute generateNews.ts.',
+		error: error.message || 'Unknown error'
+	  });
+	}
+  });
 
 // Start the server
 const start = async () => {

@@ -9,6 +9,7 @@ const client = new AzureOpenAI({
   deployment: "o4-mini",
   apiVersion: "2024-12-01-preview",
 });
+console.log("✅ Script generateNews.ts lancé depuis le backend !");
 
 async function main() {
   // Étape 1 : lire les articles bruts depuis un fichier JSON
