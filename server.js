@@ -139,7 +139,7 @@ async function processAllPdfs() {
 		}
 		
 		pdfCount++; // Increment counter
-		if (pdfCount >= 3) break; // Limit to 3 PDFs for testing
+		if (pdfCount >= 5) break; // Limit to 5 PDFs for testing
 	}
 
 	fs.writeFileSync("src/data/extracted_texts.json", JSON.stringify(output));
@@ -162,6 +162,37 @@ fastify.get('/process-pdfs', async (request, reply) => {
         return { status: 'error', message: error.message };
     }
 });
+
+import util from 'util';
+const execPromise = util.promisify(exec);
+
+fastify.post('/generate-news', async (request, reply) => {
+  try {
+    console.log('🟡 Backend : lancement de generateNews.ts via npx tsx...');
+    const { stdout, stderr } = await execPromise('npx tsx scripts/generateNews.ts');
+
+    if (stderr && stderr.trim() !== '') {
+      console.warn("⚠️ stderr de generateNews.ts :", stderr);
+    }
+
+    console.log("✅ stdout de generateNews.ts ↓↓↓");
+    console.log(stdout);
+
+    reply.send({
+      status: 'success',
+      message: 'Génération terminée',
+      output: stdout
+    });
+  } catch (error) {
+    console.error("❌ Erreur exec generateNews.ts :", error);
+    reply.status(500).send({
+      status: 'error',
+      message: 'Erreur lors de la génération',
+      details: error.message || 'Erreur inconnue'
+    });
+  }
+});
+
 
 // Start the server
 const start = async () => {

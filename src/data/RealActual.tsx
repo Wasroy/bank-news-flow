@@ -15,6 +15,8 @@ export function getRealActualNews(): NewsItem[] {
     "id": "2",
     "title": "Ces entreprises qui s'engagent auprès des athlètes",
     "content": "Le monde de l'assurance soutient et accompagne des sportifs qualifiés pour les Jeux de Paris 2024. Avec des approches, mais aussi des intérêts différents.",
+    "author": "",
+    "source": "",
     "theme": "Actualité Secteur Assurance",
     "status": "pending",
     "createdAt": "2024-07-15T12:00:00Z",

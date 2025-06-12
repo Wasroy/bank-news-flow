@@ -9,62 +9,100 @@ const client = new AzureOpenAI({
   deployment: "o4-mini",
   apiVersion: "2024-12-01-preview",
 });
+
 console.log("✅ Script generateNews.ts lancé depuis le backend !");
 
 async function main() {
-  // Étape 1 : lire les articles bruts depuis un fichier JSON
-  const rawArticlesPath = path.resolve("src","data" ,"extracted_texts.json");
+  const rawArticlesPath = path.resolve("src", "data", "extracted_texts.json");
   const rawArticles = JSON.parse(fs.readFileSync(rawArticlesPath, "utf-8"));
 
-  const prompt = `
-  Tu es un assistant chargé de convertir des métadonnées d'articles en objets formatés pour une revue de presse.
-  
-  Pour chaque entrée du tableau JSON ci-dessous, extrait uniquement la partie "metadata", et convertis-la en un objet contenant :
-  
-  - "id" : une chaîne de caractère unique (ex : "1", "2", ...)
-  - "title" : le champ "title" d'origine
-  - "content" : le champ "abstract"
-  - "theme" : le champ "category"
-  - "status" : choisis 6 "approved" et 4 "pending" aléatoirement
-  - "createdAt" : la date actuelle au format ISO
-  - "aiClassification" : reprends la valeur de "category"
-  
-  Voici les données à traiter :
-  
-  ${JSON.stringify(rawArticles, null, 2)}
-  
-  Répond uniquement avec un tableau JSON d’objets au format demandé. Pas d’explication, pas de texte autour.
-  `;
-  
+  let index = 1;
+  const formattedNews: any[] = [];
 
-  const completion = await client.chat.completions.create({
-    model: "o4-mini",
-    messages: [
-      { role: "system", content: "Tu es un assistant qui reformate des articles économiques." },
-      { role: "user", content: prompt },
-    ],
-    max_completion_tokens: 3000,
-  });
+  for (const article of rawArticles) {
+    if (article.error) continue;
 
-  
-  const rawJson = completion.choices[0].message.content!;
+    const meta = article.metadata;
 
-  console.log("Réponse brute de l'IA ↓↓↓");
-  console.log(rawJson);
-  
+    // Limiter la taille du résumé pour éviter dépassement
+    const abstract = (meta.abstract || '').slice(0, 1000);
 
-  const newsItems = JSON.parse(rawJson);
+    const prompt = `
+Reformate cet article JSON au format indiqué. Répond uniquement avec un objet JSON, sans texte autour.
+
+Données :
+{
+  "title": "${meta.title}",
+  "abstract": "${abstract}",
+  "author": "${Array.isArray(meta.author) ? meta.author.join(', ') : meta.author || 'N/A'}",
+  "publisher": "${meta.publisher || 'N/A'}",
+  "category": "${meta.category}",
+  "date": "${meta.date || 'N/A'}"
+}
+
+Format souhaité :
+{
+  "id": "${index}",
+  "title": "...",
+  "content": "...",
+  "author": "...",
+  "source": "...",
+  "theme": "...",
+  "status": "approved" ou "pending",
+  "createdAt": contenu de date,
+  "aiClassification": idem que theme
+}
+`.trim();
+
+    console.log(`🧠 Envoi de l'article ${index}...`);
+
+    try {
+      const completion = await client.chat.completions.create({
+        model: "o4-mini",
+        messages: [
+          { role: "system", content: "Tu es un assistant qui reformate des articles économiques." },
+          { role: "user", content: prompt },
+        ],
+        max_completion_tokens: 3000,
+      });
+
+      const result = completion.choices[0].message.content!;
+      console.log("💬 Réponse brute ↓↓↓");
+      console.log(result);
+
+      if (!result || result.trim().length === 0) {
+        console.error("❌ Réponse vide de l'IA. Article ignoré.");
+        continue;
+      }
+
+      let parsed;
+      try {
+        parsed = JSON.parse(result);
+      } catch (err) {
+        console.error("❌ JSON mal formé. Voici le contenu brut ↓↓↓");
+        console.error(result);
+        continue;
+      }
+
+      formattedNews.push(parsed);
+      index++;
+
+      if (formattedNews.length >= 10) break;
+    } catch (err) {
+      console.error(`❌ Erreur lors du traitement de l'article ${index}`, err);
+    }
+  }
 
   const fileContent = `import { NewsItem } from '../types/news';
 
 export function getRealActualNews(): NewsItem[] {
-  return ${JSON.stringify(newsItems, null, 2)};
+  return ${JSON.stringify(formattedNews, null, 2)};
 }
 `;
 
   const outputPath = path.resolve("src", "data", "RealActual.tsx");
   fs.writeFileSync(outputPath, fileContent);
-  console.log("Fichier RealActual.tsx mis à jour avec les actualités reformattées !");
+  console.log(`📝 Fichier RealActual.tsx mis à jour avec ${formattedNews.length} actualités !`);
 }
 
 main().catch((err) => {

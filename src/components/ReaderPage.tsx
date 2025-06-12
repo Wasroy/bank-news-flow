@@ -52,7 +52,7 @@ const ReaderPage = () => {
         {/* En-tête */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Actualités Financières Validées
+            Actualités Financières n°992
           </h1>
           <p className="text-gray-600">
             Consultez les dernières actualités du secteur bancaire et financier validées par la Banque de France.
