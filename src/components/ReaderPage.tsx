@@ -1,4 +1,3 @@
-
 import { useState, useMemo } from 'react';
 import { NewsItem, NewsTheme, NEWS_THEMES, THEME_COLORS } from '../types/news';
 import { generateMockNews } from '../data/mockNews';
@@ -100,9 +99,9 @@ const ReaderPage = () => {
                   onClick={() => setSelectedTheme(theme)}
                   className="mb-2"
                 >
-                  <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold mr-2 ${THEME_COLORS[theme]}`}>
+                  <Badge className={`${THEME_COLORS[theme]} mr-2`}>
                     {themeStats[theme]}
-                  </span>
+                  </Badge>
                   {theme}
                 </Button>
               ))}

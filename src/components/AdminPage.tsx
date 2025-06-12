@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { NewsItem, NewsTheme } from '../types/news';
 import { getRealActualNews } from '../data/RealActual';
