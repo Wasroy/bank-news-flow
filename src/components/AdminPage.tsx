@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { BarChart3, Clock, CheckCircle, XCircle, RefreshCw, Zap } from 'lucide-react';
 import { useNews } from './NewsContext';
+import { exec } from 'child_process';
 
 const AdminPage = () => {
   const { news, setNews } = useNews();
@@ -43,10 +44,24 @@ const handleGenerateNews = async () => {
   console.log('Génération des actualités en cours...');
 
   try {
-    const freshNews = await getWeeklyDigest(); // Appel à l'API réelle
-    console.log('Nouvelles actualités récupérées :', freshNews);
+    // Step 1: Call getWeeklyDigest to generate extracted_texts.json
+    const freshNews = await getWeeklyDigest();
+    console.log('Fichier extracted_texts.json mis à jour avec les nouvelles actualités.');
 
-    setNews((prev) => [...freshNews, ...prev]); // Tu peux aussi remplacer au lieu d'ajouter
+    // Step 2: Call the backend endpoint to execute generateNews.ts
+    const response = await fetch('/generate-news', { method: 'POST' });
+    const result = await response.json();
+
+    if (result.status === 'success') {
+      console.log('generateNews.ts exécuté avec succès.');
+
+      // Step 3: Load updated news from RealActual.tsx
+      const updatedNews = await import('../data/RealActual').then(module => module.getRealActualNews());
+      setNews(updatedNews);
+      console.log('Actualités mises à jour depuis RealActual.tsx.');
+    } else {
+      console.error('Erreur lors de l\'exécution de generateNews.ts:', result.message);
+    }
   } catch (error) {
     console.error('Erreur lors de la génération:', error);
   } finally {

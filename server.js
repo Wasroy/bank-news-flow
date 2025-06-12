@@ -4,6 +4,7 @@ import { DocumentAnalysisClient, AzureKeyCredential } from '@azure/ai-form-recog
 import { AzureOpenAI } from 'openai';
 import dotenv from 'dotenv';
 import fs from 'node:fs';
+import { exec } from 'child_process';
 
 dotenv.config()
 const fastify = Fastify({
@@ -158,6 +159,29 @@ fastify.get('/process-pdfs', async (request, reply) => {
         fastify.log.error(error);
         return { status: 'error', message: error.message };
     }
+});
+
+fastify.post('/generate-news', async (request, reply) => {
+  try {
+    console.log('Starting generateNews.ts execution...');
+    await new Promise((resolve, reject) => {
+      exec('node scripts/generateNews.ts', (error, stdout, stderr) => {
+        if (error) {
+          console.error('Error executing generateNews.ts:', error);
+          reject(error);
+        } else {
+          console.log('generateNews.ts executed successfully.');
+          console.log(stdout);
+          resolve(stdout);
+        }
+      });
+    });
+
+    reply.send({ status: 'success', message: 'generateNews.ts executed successfully.' });
+  } catch (error) {
+    console.error('Error:', error);
+    reply.status(500).send({ status: 'error', message: 'Failed to execute generateNews.ts.' });
+  }
 });
 
 // Start the server
