@@ -14,7 +14,7 @@ const Navigation = ({ currentView, onViewChange }: NavigationProps) => {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <h1 className="text-xl font-bold text-gray-900">
-              Revue de Presse IA
+              ActualRisk Pro
             </h1>
           </div>
           

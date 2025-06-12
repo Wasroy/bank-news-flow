@@ -85,7 +85,7 @@ const handleGenerateNews = async () => {
           <div className="flex justify-between items-start">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                Administration des actualités - Simon
+                Administration des actualités - Simon Bricaud
               </h1>
               <p className="text-gray-600">
                 Gérez la validation et la classification des actualités générées par l'IA

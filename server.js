@@ -137,7 +137,7 @@ async function processAllPdfs() {
 		}
 		
 		pdfCount++; // Increment counter
-		if (pdfCount >= 2) break; // Limit to 3 PDFs for testing
+		if (pdfCount >= 5) break; // Limit to 5 PDFs for testing
 	}
 
 	fs.writeFileSync("src/data/extracted_texts.json", JSON.stringify(output));
@@ -161,32 +161,36 @@ fastify.get('/process-pdfs', async (request, reply) => {
     }
 });
 
+import util from 'util';
+const execPromise = util.promisify(exec);
+
 fastify.post('/generate-news', async (request, reply) => {
-	try {
-	  console.log('Starting generateNews.ts execution...');
-	  await new Promise((resolve, reject) => {
-		exec('npx tsx scripts/generateNews.ts', (error, stdout, stderr) => {
-		  if (error) {
-			console.error('Error executing generateNews.ts:', error);
-			reject(error);
-		  } else {
-			console.log('generateNews.ts executed successfully.');
-			console.log(stdout);
-			resolve(stdout);
-		  }
-		});
-	  });
-  
-	  reply.send({ status: 'success', message: 'generateNews.ts executed successfully.' });
-	} catch (error) {
-	  console.error('Error:', error);
-	  reply.status(500).send({
-		status: 'error',
-		message: 'Failed to execute generateNews.ts.',
-		error: error.message || 'Unknown error'
-	  });
-	}
-  });
+  try {
+    console.log('🟡 Backend : lancement de generateNews.ts via npx tsx...');
+    const { stdout, stderr } = await execPromise('npx tsx scripts/generateNews.ts');
+
+    if (stderr && stderr.trim() !== '') {
+      console.warn("⚠️ stderr de generateNews.ts :", stderr);
+    }
+
+    console.log("✅ stdout de generateNews.ts ↓↓↓");
+    console.log(stdout);
+
+    reply.send({
+      status: 'success',
+      message: 'Génération terminée',
+      output: stdout
+    });
+  } catch (error) {
+    console.error("❌ Erreur exec generateNews.ts :", error);
+    reply.status(500).send({
+      status: 'error',
+      message: 'Erreur lors de la génération',
+      details: error.message || 'Erreur inconnue'
+    });
+  }
+});
+
 
 // Start the server
 const start = async () => {
