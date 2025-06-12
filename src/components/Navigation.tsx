@@ -1,42 +1,49 @@
 
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Shield, Users } from 'lucide-react';
+import { Settings, Users, Archive } from 'lucide-react';
 
 interface NavigationProps {
-  currentView: 'admin' | 'reader';
-  onViewChange: (view: 'admin' | 'reader') => void;
+  currentView: 'admin' | 'reader' | 'weekly-reviews';
+  onViewChange: (view: 'admin' | 'reader' | 'weekly-reviews') => void;
 }
 
 const Navigation = ({ currentView, onViewChange }: NavigationProps) => {
   return (
-    <nav className="bg-white shadow-lg border-b border-gray-200">
+    <nav className="bg-white shadow-sm border-b">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <h1 className="text-2xl font-bold text-primary">ActualRisk Pro</h1>
-              <p className="text-sm text-muted-foreground">Plateforme de veille d'actualités bancaires</p>
-            </div>
+            <h1 className="text-xl font-bold text-gray-900">
+              Revue de Presse IA
+            </h1>
           </div>
           
           <div className="flex items-center space-x-4">
             <Button
-              variant={currentView === 'admin' ? 'default' : 'outline'}
-              onClick={() => onViewChange('admin')}
-              className="flex items-center space-x-2"
-            >
-              <Shield className="h-4 w-4" />
-              <span>Administration</span>
-            </Button>
-            
-            <Button
-              variant={currentView === 'reader' ? 'default' : 'outline'}
+              variant={currentView === 'reader' ? 'default' : 'ghost'}
               onClick={() => onViewChange('reader')}
               className="flex items-center space-x-2"
             >
               <Users className="h-4 w-4" />
-              <span>Lecture</span>
+              <span>Lecteur</span>
+            </Button>
+            
+            <Button
+              variant={currentView === 'admin' ? 'default' : 'ghost'}
+              onClick={() => onViewChange('admin')}
+              className="flex items-center space-x-2"
+            >
+              <Settings className="h-4 w-4" />
+              <span>Administration</span>
+            </Button>
+
+            <Button
+              variant={currentView === 'weekly-reviews' ? 'default' : 'ghost'}
+              onClick={() => onViewChange('weekly-reviews')}
+              className="flex items-center space-x-2"
+            >
+              <Archive className="h-4 w-4" />
+              <span>Revues Hebdo</span>
             </Button>
           </div>
         </div>
