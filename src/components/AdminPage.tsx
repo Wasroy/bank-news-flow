@@ -1,14 +1,14 @@
 
 import { useState } from 'react';
 import { NewsItem, NewsTheme } from '../types/news';
-import { generateMockNews } from '../data/mockNews';
+import { getRealActualNews } from '../data/RealActual'; // Importez la nouvelle fonction
 import NewsCard from './NewsCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { BarChart3, Clock, CheckCircle, XCircle } from 'lucide-react';
 
 const AdminPage = () => {
-  const [news, setNews] = useState<NewsItem[]>(generateMockNews());
+  const [news, setNews] = useState<NewsItem[]>(getRealActualNews());
 
   const handleApprove = (id: string) => {
     setNews(news.map(item => 
@@ -48,7 +48,7 @@ const AdminPage = () => {
         {/* En-tête */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Administration des actualités
+            Administration des actualités - Simon
           </h1>
           <p className="text-gray-600">
             Gérez la validation et la classification des actualités générées par l'IA
