@@ -28,7 +28,9 @@
   "scripts": {
     "start:backend": "nodemon server.js",
     "start:frontend": "vite",
-    "start:all": "concurrently \"npm run start:backend\" \"npm run start:frontend\""
+    "start:all": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "dev": "vite",
+    "build:dev": "vite build --mode development"
   },
   "devDependencies": {
     "@vitejs/plugin-react-swc": "^3.10.2",
