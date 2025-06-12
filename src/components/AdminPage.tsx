@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { NewsItem, NewsTheme } from '../types/news';
-import { getRealActualNews } from '../data/RealActual'; // Importez la nouvelle fonction
+import { getRealActualNews } from '../data/RealActual';
 import NewsCard from './NewsCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
