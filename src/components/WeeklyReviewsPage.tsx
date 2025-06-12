@@ -21,8 +21,8 @@ interface WeeklyReview {
 const mockWeeklyReviews: WeeklyReview[] = [
   {
     id: '1',
-    weekNumber: 49,
-    year: 2024,
+    weekNumber: 991,
+    year: 2025,
     startDate: '2024-12-02',
     endDate: '2024-12-08',
     totalNews: 15,
@@ -32,8 +32,8 @@ const mockWeeklyReviews: WeeklyReview[] = [
   },
   {
     id: '2',
-    weekNumber: 48,
-    year: 2024,
+    weekNumber: 990,
+    year: 2025,
     startDate: '2024-11-25',
     endDate: '2024-12-01',
     totalNews: 18,
@@ -43,8 +43,8 @@ const mockWeeklyReviews: WeeklyReview[] = [
   },
   {
     id: '3',
-    weekNumber: 47,
-    year: 2024,
+    weekNumber: 989,
+    year: 2025,
     startDate: '2024-11-18',
     endDate: '2024-11-24',
     totalNews: 20,
@@ -54,8 +54,8 @@ const mockWeeklyReviews: WeeklyReview[] = [
   },
   {
     id: '4',
-    weekNumber: 46,
-    year: 2024,
+    weekNumber: 988,
+    year: 2025,
     startDate: '2024-11-11',
     endDate: '2024-11-17',
     totalNews: 13,
@@ -65,8 +65,8 @@ const mockWeeklyReviews: WeeklyReview[] = [
   },
   {
     id: '5',
-    weekNumber: 45,
-    year: 2024,
+    weekNumber: 987,
+    year: 2025,
     startDate: '2024-11-04',
     endDate: '2024-11-10',
     totalNews: 22,

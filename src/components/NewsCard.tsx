@@ -1,4 +1,4 @@
-
+import React from 'react'; // Ajout de l'import React
 import { useState } from 'react';
 import { NewsItem, NewsTheme, NEWS_THEMES, THEME_COLORS } from '../types/news';
 import { Button } from '@/components/ui/button';
@@ -15,6 +15,7 @@ interface NewsCardProps {
   onReject?: (id: string) => void;
   onThemeChange?: (id: string, theme: NewsTheme) => void;
   onContentEdit?: (id: string, content: string) => void;
+  key?: React.Key;
 }
 
 const NewsCard = ({ 
