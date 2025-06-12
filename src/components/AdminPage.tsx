@@ -5,7 +5,6 @@ import { getExtractedNews } from '../utils/newsTransform';
 import NewsCard from './NewsCard';
 import GenerateNewsButton from './GenerateNewsButton';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { BarChart3, Clock, CheckCircle, XCircle } from 'lucide-react';
 
 const AdminPage = () => {

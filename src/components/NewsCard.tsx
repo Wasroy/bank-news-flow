@@ -59,14 +59,14 @@ const NewsCard = ({
             {news.title}
           </CardTitle>
           <div className="flex flex-col items-end space-y-2">
-            <Badge className={`${THEME_COLORS[news.theme]} text-xs`}>
+            <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${THEME_COLORS[news.theme]}`}>
               {news.theme}
-            </Badge>
+            </span>
             {isAdmin && (
-              <Badge className={`${getStatusColor(news.status)} text-xs`}>
+              <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${getStatusColor(news.status)}`}>
                 {news.status === 'pending' ? 'En attente' : 
                  news.status === 'approved' ? 'Validé' : 'Rejeté'}
-              </Badge>
+              </span>
             )}
           </div>
         </div>
@@ -111,7 +111,7 @@ const NewsCard = ({
             </div>
           </div>
         ) : (
-          <p className="text-gray-700 text-base leading-relaxed">
+          <p className="text-gray-700 text-lg leading-relaxed">
             {news.content}
           </p>
         )}
@@ -127,7 +127,7 @@ const NewsCard = ({
                 value={news.theme}
                 onValueChange={(value: NewsTheme) => onThemeChange?.(news.id, value)}
               >
-                <SelectTrigger className="w-48 h-8 text-sm">
+                <SelectTrigger className="w-40 h-8 text-sm">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>

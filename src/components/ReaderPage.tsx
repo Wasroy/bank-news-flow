@@ -4,7 +4,6 @@ import { NewsItem, NewsTheme, NEWS_THEMES, THEME_COLORS } from '../types/news';
 import { getExtractedNews } from '../utils/newsTransform';
 import NewsCard from './NewsCard';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Filter, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -125,9 +124,9 @@ const ReaderPage = () => {
                   onClick={() => setSelectedTheme(theme)}
                   className="mb-2"
                 >
-                  <Badge className={`${THEME_COLORS[theme]} mr-2`}>
+                  <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold mr-2 ${THEME_COLORS[theme]}`}>
                     {themeStats[theme]}
-                  </Badge>
+                  </span>
                   {theme}
                 </Button>
               ))}
