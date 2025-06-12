@@ -69,6 +69,37 @@ const handleGenerateNews = async () => {
   }
 };
 
+const handleExportPDF = () => {
+    // Replace this with the actual HTML you want to export
+  const htmlContent = document.documentElement.outerHTML;
+  
+  fetch('http://localhost:3000/export', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ html: htmlContent })
+  })
+    .then(response => {
+      if (!response.ok) throw new Error('Network response was not ok');
+      return response.blob();
+    })
+    .then(blob => {
+      // Create a link to download the PDF
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'newsletter.pdf';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    })
+    .catch(error => {
+      console.error('Error exporting PDF:', error);
+    });
+}
+
   // Statistiques
   const stats = {
     total: news.length,
@@ -108,6 +139,14 @@ const handleGenerateNews = async () => {
                   Générer les actualités
                 </>
               )}
+            </Button>
+            <Button
+              onClick={handleExportPDF}
+              className="bg-green-600 hover:bg-green-700 text-white ml-2"
+              size="lg"
+            >
+              <RefreshCw className="h-5 w-5 mr-2" />
+              Exporter la newsletter
             </Button>
           </div>
         </div>

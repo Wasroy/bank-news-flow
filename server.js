@@ -4,6 +4,8 @@ import { DocumentAnalysisClient, AzureKeyCredential } from '@azure/ai-form-recog
 import { AzureOpenAI } from 'openai';
 import dotenv from 'dotenv';
 import fs from 'node:fs';
+import puppeteer from 'puppeteer';
+import fastifyCors from '@fastify/cors';
 import { exec } from 'child_process';
 
 dotenv.config()
@@ -161,6 +163,7 @@ fastify.get('/process-pdfs', async (request, reply) => {
     }
 });
 
+<<<<<<< HEAD
 import util from 'util';
 const execPromise = util.promisify(exec);
 
@@ -192,6 +195,8 @@ fastify.post('/generate-news', async (request, reply) => {
 });
 
 
+=======
+>>>>>>> 45a67899bfd278f5b3abb75f0ca4925421371491
 // Start the server
 const start = async () => {
   try {
@@ -203,4 +208,10 @@ const start = async () => {
   }
 }
 
+// Register CORS before your routes
+await fastify.register(fastifyCors, {
+  origin: 'http://localhost:8080', // Allow your Vite frontend
+  methods: ['POST', 'GET'],        // Allow POST and GET
+  credentials: true                // If you need cookies/auth
+});
 start();
