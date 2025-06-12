@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
-import { CheckCircle, XCircle, Edit, Save, X, FileText, User, Building } from 'lucide-react';
+import { CheckCircle, XCircle, Edit, Save, X } from 'lucide-react';
 
 interface NewsCardProps {
   news: NewsItem;
@@ -59,36 +59,20 @@ const NewsCard = ({
             {news.title}
           </CardTitle>
           <div className="flex flex-col items-end space-y-2">
-            <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${THEME_COLORS[news.theme]}`}>
+            <Badge className={`${THEME_COLORS[news.theme]} text-xs`}>
               {news.theme}
-            </span>
+            </Badge>
             {isAdmin && (
-              <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${getStatusColor(news.status)}`}>
+              <Badge className={`${getStatusColor(news.status)} text-xs`}>
                 {news.status === 'pending' ? 'En attente' : 
                  news.status === 'approved' ? 'Validé' : 'Rejeté'}
-              </span>
+              </Badge>
             )}
           </div>
         </div>
-        <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-          <span>{new Date(news.createdAt).toLocaleDateString('fr-FR')}</span>
-          {news.source && (
-            <>
-              <div className="flex items-center space-x-1">
-                <Building className="h-3 w-3" />
-                <span>{news.source.publisher}</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <User className="h-3 w-3" />
-                <span>{news.source.author}</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <FileText className="h-3 w-3" />
-                <span className="text-xs">{news.source.file}</span>
-              </div>
-            </>
-          )}
-        </div>
+        <p className="text-sm text-muted-foreground">
+          {new Date(news.createdAt).toLocaleDateString('fr-FR')}
+        </p>
       </CardHeader>
       
       <CardContent>
@@ -97,7 +81,7 @@ const NewsCard = ({
             <Textarea
               value={editedContent}
               onChange={(e) => setEditedContent(e.target.value)}
-              className="min-h-[120px] resize-none text-base"
+              className="min-h-[100px] resize-none text-base"
             />
             <div className="flex space-x-2">
               <Button size="sm" onClick={handleSaveEdit} className="flex items-center space-x-1">
@@ -111,7 +95,7 @@ const NewsCard = ({
             </div>
           </div>
         ) : (
-          <p className="text-gray-700 text-lg leading-relaxed">
+          <p className="text-gray-700 text-base leading-relaxed line-clamp-4">
             {news.content}
           </p>
         )}
@@ -127,7 +111,7 @@ const NewsCard = ({
                 value={news.theme}
                 onValueChange={(value: NewsTheme) => onThemeChange?.(news.id, value)}
               >
-                <SelectTrigger className="w-40 h-8 text-sm">
+                <SelectTrigger className="w-64 h-8 text-sm">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>

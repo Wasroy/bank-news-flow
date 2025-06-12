@@ -1,31 +1,14 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { NewsItem, NewsTheme } from '../types/news';
-import { getExtractedNews } from '../utils/newsTransform';
+import { getRealActualNews } from '../data/RealActual'; // Importez la nouvelle fonction
 import NewsCard from './NewsCard';
-import GenerateNewsButton from './GenerateNewsButton';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { BarChart3, Clock, CheckCircle, XCircle } from 'lucide-react';
 
 const AdminPage = () => {
-  const [news, setNews] = useState<NewsItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const loadNews = async () => {
-    setIsLoading(true);
-    try {
-      const extractedNews = await getExtractedNews();
-      setNews(extractedNews);
-    } catch (error) {
-      console.error('Erreur lors du chargement des actualités:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    loadNews();
-  }, []);
+  const [news, setNews] = useState<NewsItem[]>(getRealActualNews());
 
   const handleApprove = (id: string) => {
     setNews(news.map(item => 
@@ -51,10 +34,6 @@ const AdminPage = () => {
     ));
   };
 
-  const handleNewsGenerated = () => {
-    loadNews();
-  };
-
   // Statistiques
   const stats = {
     total: news.length,
@@ -63,33 +42,17 @@ const AdminPage = () => {
     rejected: news.filter(item => item.status === 'rejected').length,
   };
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Chargement des actualités...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* En-tête */}
         <div className="mb-8">
-          <div className="flex justify-between items-start">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                Administration des actualités - Azure AI
-              </h1>
-              <p className="text-gray-600">
-                Gérez la validation et la classification des actualités générées par Azure AI Foundry
-              </p>
-            </div>
-            <GenerateNewsButton onNewsGenerated={handleNewsGenerated} />
-          </div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Administration des actualités - Simon
+          </h1>
+          <p className="text-gray-600">
+            Gérez la validation et la classification des actualités générées par l'IA
+          </p>
         </div>
 
         {/* Statistiques */}
