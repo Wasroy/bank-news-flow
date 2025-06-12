@@ -1,39 +1,45 @@
-# Bank News Flow
+# ActualRisk
 
-## Project Overview
-Bank News Flow is a web application designed to process and analyze financial news articles. It leverages Azure services for document analysis and OpenAI for text processing and metadata extraction. The application provides a streamlined workflow for extracting, cleaning, and categorizing financial news.
+## Présentation du projet
 
-## Features
-- **PDF Processing**: Extract text from PDF files using Azure Form Recognizer.
-- **Text Cleaning**: Remove irrelevant content and focus on the main article using OpenAI.
-- **Metadata Extraction**: Extract metadata such as title, author, publication date, and category.
-- **News Categorization**: Classify news articles into predefined themes.
-- **Admin Dashboard**: Manage and review extracted news articles.
-  - Approve or reject news items.
-  - Edit content and themes of news articles.
-- **Reader View**: Browse categorized news articles.
+**ActualRisk** est une application web conçue pour automatiser et faciliter la veille financière et documentaire à la Banque de France. Elle utilise les services Azure pour l’analyse documentaire et les modèles OpenAI pour la synthèse et la catégorisation des articles. Cette solution vise à assister les documentalistes et analystes dans la production hebdomadaire d’une revue de presse synthétique et thématique.
 
-## Technologies Used
-- **Backend**: Node.js, Fastify
-- **Frontend**: React, TypeScript, Tailwind CSS
-- **Azure Services**:
+## Fonctionnalités
+
+- **Traitement de fichiers PDF** : Extraction de texte depuis des fichiers PDF (OCR) à l’aide d’Azure Form Recognizer.
+- **Nettoyage du texte** : Suppression des éléments non pertinents pour ne garder que le cœur de l’article.
+- **Extraction de métadonnées** : Titre, auteur, date de publication, thème principal.
+- **Classification thématique** : Attribution automatique des articles à des thèmes prédéfinis.
+- **Tableau de bord administrateur** :
+  - Visualisation des articles générés par l’IA.
+  - Validation, édition et reclassement des actualités.
+- **Vue lecteur** : Consultation des actualités validées, organisées par thème, sans possibilité d’édition.
+
+## Technologies utilisées
+
+- **Backend** : Node.js, Fastify
+- **Frontend** : React, TypeScript, Tailwind CSS
+- **Services Azure** :
   - Azure Form Recognizer
   - Azure Blob Storage
-  - Azure OpenAI
-- **Other Libraries**:
+  - Azure OpenAI (gpt-35-turbo)
+- **Bibliothèques supplémentaires** :
   - Shadcn UI
   - Radix UI
   - Class Variance Authority
-  - Lucide React (icons)
+  - Lucide React (icônes)
 
 ## Installation
 
-### Prerequisites
-- Node.js & npm installed ([Install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating))
-- Azure account with access to Form Recognizer and OpenAI services.
+### Prérequis
 
-### Steps
-1. Clone the repository:
-   ```sh
-   git clone <YOUR_GIT_URL>
-   cd <YOUR_PROJECT_NAME>
+- Node.js et npm installés (recommandé via [nvm](https://github.com/nvm-sh/nvm#installing-and-updating))
+- Compte Azure avec accès à OpenAI et Form Recognizer
+- Accès au portail Azure et création des ressources nécessaires
+
+### Étapes
+
+1. Cloner le dépôt :
+   ```bash
+   git clone <VOTRE_URL_GIT>
+   cd <NOM_DU_PROJET>
