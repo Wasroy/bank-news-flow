@@ -22,7 +22,7 @@
 - **Services Azure** :
   - Azure Form Recognizer
   - Azure Blob Storage
-  - Azure OpenAI (gpt-35-turbo)
+  - Azure OpenAI (gpt-4o-mini)
 - **Bibliothèques supplémentaires** :
   - Shadcn UI
   - Radix UI

@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { BarChart3, Clock, CheckCircle, XCircle, RefreshCw, Zap } from 'lucide-react';
 
+
 const AdminPage = () => {
   const [news, setNews] = useState<NewsItem[]>(getRealActualNews());
   const [isGenerating, setIsGenerating] = useState(false);
@@ -37,28 +38,21 @@ const AdminPage = () => {
   };
 
   // Fonction pour générer de nouvelles actualités
-  const handleGenerateNews = async () => {
-    setIsGenerating(true);
-    console.log('Génération des actualités en cours...');
-    
-    try {
-      // Simulation d'un appel API pour générer des actualités
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Ici, vous pouvez appeler votre script de génération ou une API
-      // Par exemple : await fetch('/api/generate-news', { method: 'POST' });
-      
-      console.log('Actualités générées avec succès !');
-      
-      // Recharger les actualités (dans un vrai cas, vous récupéreriez les nouvelles données)
-      // setNews(await fetchLatestNews());
-      
-    } catch (error) {
-      console.error('Erreur lors de la génération:', error);
-    } finally {
-      setIsGenerating(false);
-    }
-  };
+const handleGenerateNews = async () => {
+  setIsGenerating(true);
+  console.log('Génération des actualités en cours...');
+
+  try {
+    const freshNews = await getWeeklyDigest(); // Appel à l'API réelle
+    console.log('Nouvelles actualités récupérées :', freshNews);
+
+    setNews((prev) => [...freshNews, ...prev]); // Tu peux aussi remplacer au lieu d'ajouter
+  } catch (error) {
+    console.error('Erreur lors de la génération:', error);
+  } finally {
+    setIsGenerating(false);
+  }
+};
 
   // Statistiques
   const stats = {

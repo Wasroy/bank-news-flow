@@ -2,7 +2,7 @@ import { NewsItem, NewsTheme } from "../src/types/news"
 
 export async function getWeeklyDigest(): Promise<NewsItem[]> {
 	console.log("Fetching weekly digest from server...");
-	const arrArticles = await fetch("http://localhost:3000/process-pdfs")
+	const arrArticles = await fetch("/process-pdfs");
 	const articles = await arrArticles.json()
 	let newsItems: NewsItem[] = []
 	if (articles) {

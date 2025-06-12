@@ -8,11 +8,17 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    proxy: {
+      '/process-pdfs': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        rewrite: path => path, // facultatif mais bon à avoir
+      },
+    },
   },
   plugins: [
     react(),
-    mode === 'development' &&
-    componentTagger(),
+    mode === 'development' && componentTagger(),
   ].filter(Boolean),
   resolve: {
     alias: {
