@@ -163,7 +163,6 @@ fastify.get('/process-pdfs', async (request, reply) => {
     }
 });
 
-<<<<<<< HEAD
 import util from 'util';
 const execPromise = util.promisify(exec);
 
@@ -195,8 +194,6 @@ fastify.post('/generate-news', async (request, reply) => {
 });
 
 
-=======
->>>>>>> 45a67899bfd278f5b3abb75f0ca4925421371491
 // Start the server
 const start = async () => {
   try {
