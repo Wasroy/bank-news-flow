@@ -14,6 +14,11 @@ export default defineConfig(({ mode }) => ({
         changeOrigin: true,
         rewrite: path => path, // facultatif mais bon à avoir
       },
+      '/generate-news': {
+        target: 'http://localhost:3000', // Proxy requests to the backend server
+        changeOrigin: true,
+        rewrite: path => path, // Optional but good to have
+      },
     },
   },
   plugins: [

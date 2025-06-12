@@ -9,6 +9,7 @@ const client = new AzureOpenAI({
   deployment: "o4-mini",
   apiVersion: "2024-12-01-preview",
 });
+console.log("✅ Script generateNews.ts lancé depuis le backend !");
 
 async function main() {
   // Étape 1 : lire les articles bruts depuis un fichier JSON
@@ -24,7 +25,7 @@ async function main() {
   - "title" : le champ "title" d'origine
   - "content" : le champ "abstract"
   - "theme" : le champ "category"
-  - "status" : toujours "pending"
+  - "status" : choisis 6 "approved" et 4 "pending" aléatoirement
   - "createdAt" : la date actuelle au format ISO
   - "aiClassification" : reprends la valeur de "category"
   

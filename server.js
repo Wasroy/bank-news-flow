@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import fs from 'node:fs';
 import puppeteer from 'puppeteer';
 import fastifyCors from '@fastify/cors';
+import { exec } from 'child_process';
 
 dotenv.config()
 const fastify = Fastify({
@@ -160,23 +161,6 @@ fastify.get('/process-pdfs', async (request, reply) => {
         fastify.log.error(error);
         return { status: 'error', message: error.message };
     }
-});
-
-fastify.post('/export', async (request, reply) => {
-    const { html } = request.body;
-    if (!html) {
-        reply.code(400).send({ error: "Missing 'html' in request body" });
-        return;
-    }
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-    await page.setContent(html, { waitUntil: 'networkidle0' });
-    const pdf = await page.pdf({ format: 'A4' });
-    await browser.close();
-
-    reply.header('Content-Type', 'application/pdf');
-    reply.header('Content-Disposition', 'attachment;filename="newsletter.pdf"');
-    reply.send(pdf);
 });
 
 // Start the server
