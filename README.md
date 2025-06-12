@@ -1,73 +1,39 @@
-# Welcome to your Lovable project
+# Bank News Flow
 
-## Project info
+## Project Overview
+Bank News Flow is a web application designed to process and analyze financial news articles. It leverages Azure services for document analysis and OpenAI for text processing and metadata extraction. The application provides a streamlined workflow for extracting, cleaning, and categorizing financial news.
 
-**URL**: https://lovable.dev/projects/93bcbf9d-2832-4822-baf3-f092b769a714
+## Features
+- **PDF Processing**: Extract text from PDF files using Azure Form Recognizer.
+- **Text Cleaning**: Remove irrelevant content and focus on the main article using OpenAI.
+- **Metadata Extraction**: Extract metadata such as title, author, publication date, and category.
+- **News Categorization**: Classify news articles into predefined themes.
+- **Admin Dashboard**: Manage and review extracted news articles.
+  - Approve or reject news items.
+  - Edit content and themes of news articles.
+- **Reader View**: Browse categorized news articles.
 
-## How can I edit this code?
+## Technologies Used
+- **Backend**: Node.js, Fastify
+- **Frontend**: React, TypeScript, Tailwind CSS
+- **Azure Services**:
+  - Azure Form Recognizer
+  - Azure Blob Storage
+  - Azure OpenAI
+- **Other Libraries**:
+  - Shadcn UI
+  - Radix UI
+  - Class Variance Authority
+  - Lucide React (icons)
 
-There are several ways of editing your application.
+## Installation
 
-**Use Lovable**
+### Prerequisites
+- Node.js & npm installed ([Install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating))
+- Azure account with access to Form Recognizer and OpenAI services.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/93bcbf9d-2832-4822-baf3-f092b769a714) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/93bcbf9d-2832-4822-baf3-f092b769a714) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+### Steps
+1. Clone the repository:
+   ```sh
+   git clone <YOUR_GIT_URL>
+   cd <YOUR_PROJECT_NAME>
