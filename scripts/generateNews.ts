@@ -1,4 +1,3 @@
-// scripts/generateNews.ts
 import 'dotenv/config';
 import fs from "fs";
 import path from "path";
@@ -14,14 +13,13 @@ const client = new AzureOpenAI({
 async function main() {
   const prompt = `
 Tu es un assistant qui génère une revue de presse hebdomadaire. Génère 10 actualités économiques courtes, chacune avec :
-- id
+- id (put the id as a string, e.g. "1")
 - title
 - content
-- theme (parmi ceux déjà utilisés dans le fichier mockNews.tsx)
+- theme : choisi parmi : 'Indicateurs économiques','Citations ACPR','Supervision & Régulation','Actualité Secteur Assurance','Actualité Secteur Banque','Mutualité & Prévoyance','Actualité financière','Cryptomonnaies','Questions macroéconomiques','Comptabilité','Immobilier','Environnement professionnel'
 - status: "pending"
 - createdAt: date ISO maintenant
-- aiClassification: même que theme
-
+- aiClassification: choisi parmis : 'Indicateurs économiques','Citations ACPR','Supervision & Régulation','Actualité Secteur Assurance','Actualité Secteur Banque','Mutualité & Prévoyance','Actualité financière','Cryptomonnaies','Questions macroéconomiques','Comptabilité','Immobilier','Environnement professionnel'
 Répond uniquement avec un tableau JSON d'objets.
 `;
 
@@ -32,7 +30,7 @@ Répond uniquement avec un tableau JSON d'objets.
       { role: "user", content: prompt },
     ],
     max_completion_tokens: 3000,
-});
+  });
 
   const rawJson = completion.choices[0].message.content!;
   const newsItems = JSON.parse(rawJson);
@@ -44,9 +42,9 @@ export function generateMockNews(): NewsItem[] {
 }
 `;
 
-  const outputPath = path.resolve("src", "data", "mockNews.tsx"); // adapte si besoin
+  const outputPath = path.resolve("src", "data", "RealActual.tsx");
   fs.writeFileSync(outputPath, fileContent);
-  console.log("Fichier mockNews.tsx mis à jour avec les actus IA !");
+  console.log("Fichier mockNews.tsx mis à jour avec les actualités générées !");
 }
 
 main().catch((err) => {

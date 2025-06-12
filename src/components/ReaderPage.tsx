@@ -55,7 +55,7 @@ const ReaderPage = () => {
             Actualités Financières Validées
           </h1>
           <p className="text-gray-600">
-            Consultez les dernières actualités du secteur bancaire et financier
+            Consultez les dernières actualités du secteur bancaire et financier validées par la Banque de France.
           </p>
         </div>
 
