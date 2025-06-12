@@ -12,6 +12,7 @@ const ReaderPage = () => {
   const { news } = useNews();
   const [selectedTheme, setSelectedTheme] = useState<NewsTheme | 'all'>('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [sortBy, setSortBy] = useState<'theme' | 'date'>('theme');
 
   const filteredNews = useMemo(() => {
     let filtered = news.filter(item => item.status === 'approved');
@@ -27,8 +28,14 @@ const ReaderPage = () => {
       );
     }
 
+    if (sortBy === 'theme') {
+      filtered = [...filtered].sort((a, b) => a.theme.localeCompare(b.theme));
+    } else if (sortBy === 'date') {
+      filtered = [...filtered].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+    }
+
     return filtered;
-  }, [news, selectedTheme, searchTerm]);
+  }, [news, selectedTheme, searchTerm, sortBy]);
 
   // Statistiques par thème
   const themeStats = useMemo(() => {
@@ -99,6 +106,35 @@ const ReaderPage = () => {
                   {theme}
                 </Button>
               ))}
+            </div>
+          </CardContent>
+        </Card>
+
+
+        {/* Trier par */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Filter className="h-5 w-5" />
+              <span>Trier par</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex gap-2">
+              <Button
+                variant={sortBy === 'theme' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setSortBy('theme')}
+              >
+                Thème
+              </Button>
+              <Button
+                variant={sortBy === 'date' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setSortBy('date')}
+              >
+                Date
+              </Button>
             </div>
           </CardContent>
         </Card>

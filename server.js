@@ -139,7 +139,7 @@ async function processAllPdfs() {
 		}
 		
 		pdfCount++; // Increment counter
-		if (pdfCount >= 2) break; // Limit to 3 PDFs for testing
+		if (pdfCount >= 3) break; // Limit to 3 PDFs for testing
 	}
 
 	fs.writeFileSync("src/data/extracted_texts.json", JSON.stringify(output));
