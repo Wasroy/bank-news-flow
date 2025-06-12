@@ -136,12 +136,12 @@ async function processAllPdfs() {
 		}
 		
 		pdfCount++; // Increment counter
-		if (pdfCount >= 10) break; // Limit to 3 PDFs for testing
+		if (pdfCount >= 2) break; // Limit to 3 PDFs for testing
 	}
 
 	fs.writeFileSync("src/data/extracted_texts.json", JSON.stringify(output));
-	return output;
 	console.log("✅ Text extraction completed. Output saved to extracted_texts.json");
+	return output;
 }
 
 // Define API routes
@@ -151,13 +151,13 @@ fastify.get('/', async (request, reply) => {
 
 // Endpoint to trigger PDF processing
 fastify.get('/process-pdfs', async (request, reply) => {
-	try {
-		await processAllPdfs();
-		return { status: 'success', message: 'PDF processing completed' };
-	} catch (error) {
-		fastify.log.error(error);
-		return { status: 'error', message: error.message };
-	}
+    try {
+        const output = await processAllPdfs();
+        return { status: 'success', message: 'PDF processing completed', output };
+    } catch (error) {
+        fastify.log.error(error);
+        return { status: 'error', message: error.message };
+    }
 });
 
 // Start the server
