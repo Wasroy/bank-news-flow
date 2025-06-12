@@ -110,7 +110,6 @@ const AdminPage = () => {
           <div className="grid gap-6">
             {news.map((item) => (
               <NewsCard
-                key={item.id}
                 news={item}
                 isAdmin={true}
                 onApprove={handleApprove}

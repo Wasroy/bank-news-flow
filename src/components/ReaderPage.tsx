@@ -99,9 +99,9 @@ const ReaderPage = () => {
                   onClick={() => setSelectedTheme(theme)}
                   className="mb-2"
                 >
-                  <Badge className={`${THEME_COLORS[theme]} mr-2`}>
+                  <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold mr-2 ${THEME_COLORS[theme]}`}>
                     {themeStats[theme]}
-                  </Badge>
+                  </span>
                   {theme}
                 </Button>
               ))}
@@ -140,7 +140,6 @@ const ReaderPage = () => {
           <div className="grid gap-6">
             {filteredNews.map((item) => (
               <NewsCard
-                key={item.id}
                 news={item}
                 isAdmin={false}
               />
