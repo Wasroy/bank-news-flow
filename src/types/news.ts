@@ -3,6 +3,8 @@ export interface NewsItem {
   id: string;
   title: string;
   content: string;
+  author?: string;
+  source?: string;
   theme: NewsTheme;
   status: 'pending' | 'approved' | 'rejected';
   createdAt: string;

@@ -22,12 +22,15 @@
     "react-router-dom": "^7.6.2",
     "sonner": "^2.0.5",
     "tailwind-merge": "^3.3.1"
+    
   },
   "type": "module",
   "scripts": {
     "start:backend": "nodemon server.js",
     "start:frontend": "vite",
-    "start:all": "concurrently \"npm run start:backend\" \"npm run start:frontend\""
+    "start:all": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "dev": "vite",
+    "build:dev": "vite build --mode development"
   },
   "devDependencies": {
     "@vitejs/plugin-react-swc": "^3.10.2",

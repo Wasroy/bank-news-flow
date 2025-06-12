@@ -1,15 +1,20 @@
-
 import { useState } from 'react';
 import { NewsItem, NewsTheme } from '../types/news';
+<<<<<<< HEAD
 import { getRealActualNews } from '../data/RealActual'; // Importez la nouvelle fonction
 import { getWeeklyDigest } from '../../scripts/getWeeklyDigest'; 
+=======
+import { getRealActualNews } from '../data/RealActual';
+>>>>>>> 764631578c33f711180e9827354525fb708e2dd5
 import NewsCard from './NewsCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { BarChart3, Clock, CheckCircle, XCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { BarChart3, Clock, CheckCircle, XCircle, RefreshCw, Zap } from 'lucide-react';
 
 const AdminPage = () => {
   const [news, setNews] = useState<NewsItem[]>(getRealActualNews());
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const handleApprove = (id: string) => {
     setNews(news.map(item => 
@@ -35,6 +40,30 @@ const AdminPage = () => {
     ));
   };
 
+  // Fonction pour générer de nouvelles actualités
+  const handleGenerateNews = async () => {
+    setIsGenerating(true);
+    console.log('Génération des actualités en cours...');
+    
+    try {
+      // Simulation d'un appel API pour générer des actualités
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Ici, vous pouvez appeler votre script de génération ou une API
+      // Par exemple : await fetch('/api/generate-news', { method: 'POST' });
+      
+      console.log('Actualités générées avec succès !');
+      
+      // Recharger les actualités (dans un vrai cas, vous récupéreriez les nouvelles données)
+      // setNews(await fetchLatestNews());
+      
+    } catch (error) {
+      console.error('Erreur lors de la génération:', error);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
   // Statistiques
   const stats = {
     total: news.length,
@@ -46,14 +75,36 @@ const AdminPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* En-tête */}
+        {/* En-tête avec bouton de génération */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Administration des actualités - Simon
-          </h1>
-          <p className="text-gray-600">
-            Gérez la validation et la classification des actualités générées par l'IA
-          </p>
+          <div className="flex justify-between items-start">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                Administration des actualités - Simon
+              </h1>
+              <p className="text-gray-600">
+                Gérez la validation et la classification des actualités générées par l'IA
+              </p>
+            </div>
+            <Button
+              onClick={handleGenerateNews}
+              disabled={isGenerating}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+              size="lg"
+            >
+              {isGenerating ? (
+                <>
+                  <RefreshCw className="h-5 w-5 mr-2 animate-spin" />
+                  Génération...
+                </>
+              ) : (
+                <>
+                  <Zap className="h-5 w-5 mr-2" />
+                  Générer les actualités
+                </>
+              )}
+            </Button>
+          </div>
         </div>
 
         {/* Statistiques */}
