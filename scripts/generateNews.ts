@@ -1,7 +1,7 @@
 import 'dotenv/config';
-import fs from "fs";
-import path from "path";
-import { AzureOpenAI } from "openai";
+import fs from 'fs';
+import path from 'path';
+import { AzureOpenAI } from 'openai';
 
 const client = new AzureOpenAI({
   endpoint: process.env.AZURE_OPENAI_ENDPOINT!,
@@ -11,40 +11,59 @@ const client = new AzureOpenAI({
 });
 
 async function main() {
+  // Étape 1 : lire les articles bruts depuis un fichier JSON
+  const rawArticlesPath = path.resolve("src","data" ,"extracted_texts.json");
+  const rawArticles = JSON.parse(fs.readFileSync(rawArticlesPath, "utf-8"));
+
   const prompt = `
-Tu es un assistant qui génère une revue de presse hebdomadaire. Génère 10 actualités économiques courtes, chacune avec :
-- id (put the id as a string, e.g. "1")
-- title
-- content
-- theme : choisi parmi : 'Indicateurs économiques','Citations ACPR','Supervision & Régulation','Actualité Secteur Assurance','Actualité Secteur Banque','Mutualité & Prévoyance','Actualité financière','Cryptomonnaies','Questions macroéconomiques','Comptabilité','Immobilier','Environnement professionnel'
-- status: "pending"
-- createdAt: date ISO maintenant
-- aiClassification: choisi parmis : 'Indicateurs économiques','Citations ACPR','Supervision & Régulation','Actualité Secteur Assurance','Actualité Secteur Banque','Mutualité & Prévoyance','Actualité financière','Cryptomonnaies','Questions macroéconomiques','Comptabilité','Immobilier','Environnement professionnel'
-Répond uniquement avec un tableau JSON d'objets.
-`;
+  Tu es un assistant chargé de convertir des métadonnées d'articles en objets formatés pour une revue de presse.
+  
+  Pour chaque entrée du tableau JSON ci-dessous, extrait uniquement la partie "metadata", et convertis-la en un objet contenant :
+  
+  - "id" : une chaîne de caractère unique (ex : "1", "2", ...)
+  - "title" : le champ "title" d'origine
+  - "content" : le champ "abstract"
+  - "theme" : le champ "category"
+  - "status" : toujours "pending"
+  - "createdAt" : la date actuelle au format ISO
+  - "aiClassification" : reprends la valeur de "category"
+  
+  Voici les données à traiter :
+  
+  ${JSON.stringify(rawArticles, null, 2)}
+  
+  Répond uniquement avec un tableau JSON d’objets au format demandé. Pas d’explication, pas de texte autour.
+  `;
+  
 
   const completion = await client.chat.completions.create({
     model: "o4-mini",
     messages: [
-      { role: "system", content: "Tu es un assistant utile pour une revue de presse économique." },
+      { role: "system", content: "Tu es un assistant qui reformate des articles économiques." },
       { role: "user", content: prompt },
     ],
     max_completion_tokens: 3000,
   });
 
+  
   const rawJson = completion.choices[0].message.content!;
+
+  console.log("Réponse brute de l'IA ↓↓↓");
+  console.log(rawJson);
+  
+
   const newsItems = JSON.parse(rawJson);
 
   const fileContent = `import { NewsItem } from '../types/news';
 
-export function generateMockNews(): NewsItem[] {
+export function getRealActualNews(): NewsItem[] {
   return ${JSON.stringify(newsItems, null, 2)};
 }
 `;
 
   const outputPath = path.resolve("src", "data", "RealActual.tsx");
   fs.writeFileSync(outputPath, fileContent);
-  console.log("Fichier mockNews.tsx mis à jour avec les actualités générées !");
+  console.log("Fichier RealActual.tsx mis à jour avec les actualités reformattées !");
 }
 
 main().catch((err) => {

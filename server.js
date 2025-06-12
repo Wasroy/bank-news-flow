@@ -139,7 +139,7 @@ async function processAllPdfs() {
 		if (pdfCount >= 10) break; // Limit to 3 PDFs for testing
 	}
 
-	fs.writeFileSync("extracted_texts.json", JSON.stringify(output));
+	fs.writeFileSync("src/data/extracted_texts.json", JSON.stringify(output));
 	return output;
 	console.log("✅ Text extraction completed. Output saved to extracted_texts.json");
 }
