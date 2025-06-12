@@ -7,10 +7,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { BarChart3, Clock, CheckCircle, XCircle, RefreshCw, Zap } from 'lucide-react';
-
+import { useNews } from './NewsContext';
 
 const AdminPage = () => {
-  const [news, setNews] = useState<NewsItem[]>(getRealActualNews());
+  const { news, setNews } = useNews();
   const [isGenerating, setIsGenerating] = useState(false);
 
   const handleApprove = (id: string) => {

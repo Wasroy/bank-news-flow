@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { NewsItem, NewsTheme, NEWS_THEMES, THEME_COLORS } from '../types/news';
-import { generateMockNews } from '../data/mockNews';
+import { useNews } from './NewsContext';
 import NewsCard from './NewsCard';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -9,41 +9,35 @@ import { Filter, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 
 const ReaderPage = () => {
+  const { news } = useNews();
   const [selectedTheme, setSelectedTheme] = useState<NewsTheme | 'all'>('all');
   const [searchTerm, setSearchTerm] = useState('');
-  
-  // Obtenir uniquement les actualités approuvées
-  const allNews = useMemo(() => 
-    generateMockNews().filter(item => item.status === 'approved'),
-    []
-  );
 
-  // Filtrer les actualités
   const filteredNews = useMemo(() => {
-    let filtered = allNews;
-    
+    let filtered = news.filter(item => item.status === 'approved');
+
     if (selectedTheme !== 'all') {
       filtered = filtered.filter(item => item.theme === selectedTheme);
     }
-    
+
     if (searchTerm) {
       filtered = filtered.filter(item => 
         item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.content.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
-    
+
     return filtered;
-  }, [allNews, selectedTheme, searchTerm]);
+  }, [news, selectedTheme, searchTerm]);
 
   // Statistiques par thème
   const themeStats = useMemo(() => {
     const stats: Record<NewsTheme, number> = {} as Record<NewsTheme, number>;
     NEWS_THEMES.forEach(theme => {
-      stats[theme] = allNews.filter(item => item.theme === theme).length;
+      stats[theme] = news.filter(item => item.theme === theme).length;
     });
     return stats;
-  }, [allNews]);
+  }, [news]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -89,7 +83,7 @@ const ReaderPage = () => {
                 onClick={() => setSelectedTheme('all')}
                 className="mb-2"
               >
-                Tous ({allNews.length})
+                Tous ({news.length})
               </Button>
               {NEWS_THEMES.map((theme) => (
                 <Button

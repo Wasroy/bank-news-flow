@@ -24,7 +24,7 @@ async function main() {
   - "title" : le champ "title" d'origine
   - "content" : le champ "abstract"
   - "theme" : le champ "category"
-  - "status" : toujours "pending"
+  - "status" : choisis aléatoirement entre "pending","approved" ou "rejected"
   - "createdAt" : la date actuelle au format ISO
   - "aiClassification" : reprends la valeur de "category"
   
