@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
-import { CheckCircle, XCircle, Edit, Save, X } from 'lucide-react';
+import { CheckCircle, XCircle, Edit, Save, X, FileText, User, Building } from 'lucide-react';
 
 interface NewsCardProps {
   news: NewsItem;
@@ -70,9 +70,25 @@ const NewsCard = ({
             )}
           </div>
         </div>
-        <p className="text-sm text-muted-foreground">
-          {new Date(news.createdAt).toLocaleDateString('fr-FR')}
-        </p>
+        <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+          <span>{new Date(news.createdAt).toLocaleDateString('fr-FR')}</span>
+          {news.source && (
+            <>
+              <div className="flex items-center space-x-1">
+                <Building className="h-3 w-3" />
+                <span>{news.source.publisher}</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <User className="h-3 w-3" />
+                <span>{news.source.author}</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <FileText className="h-3 w-3" />
+                <span className="text-xs">{news.source.file}</span>
+              </div>
+            </>
+          )}
+        </div>
       </CardHeader>
       
       <CardContent>
@@ -81,7 +97,7 @@ const NewsCard = ({
             <Textarea
               value={editedContent}
               onChange={(e) => setEditedContent(e.target.value)}
-              className="min-h-[100px] resize-none text-base"
+              className="min-h-[120px] resize-none text-base"
             />
             <div className="flex space-x-2">
               <Button size="sm" onClick={handleSaveEdit} className="flex items-center space-x-1">
@@ -95,7 +111,7 @@ const NewsCard = ({
             </div>
           </div>
         ) : (
-          <p className="text-gray-700 text-base leading-relaxed line-clamp-4">
+          <p className="text-gray-700 text-base leading-relaxed">
             {news.content}
           </p>
         )}
@@ -111,7 +127,7 @@ const NewsCard = ({
                 value={news.theme}
                 onValueChange={(value: NewsTheme) => onThemeChange?.(news.id, value)}
               >
-                <SelectTrigger className="w-64 h-8 text-sm">
+                <SelectTrigger className="w-48 h-8 text-sm">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>

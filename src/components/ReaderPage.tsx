@@ -1,7 +1,7 @@
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { NewsItem, NewsTheme, NEWS_THEMES, THEME_COLORS } from '../types/news';
-import { generateMockNews } from '../data/mockNews';
+import { getExtractedNews } from '../utils/newsTransform';
 import NewsCard from './NewsCard';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -12,12 +12,26 @@ import { Input } from '@/components/ui/input';
 const ReaderPage = () => {
   const [selectedTheme, setSelectedTheme] = useState<NewsTheme | 'all'>('all');
   const [searchTerm, setSearchTerm] = useState('');
-  
-  // Obtenir uniquement les actualités approuvées
-  const allNews = useMemo(() => 
-    generateMockNews().filter(item => item.status === 'approved'),
-    []
-  );
+  const [allNews, setAllNews] = useState<NewsItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadNews = async () => {
+      setIsLoading(true);
+      try {
+        const extractedNews = await getExtractedNews();
+        // Obtenir uniquement les actualités approuvées
+        setAllNews(extractedNews.filter(item => item.status === 'approved'));
+      } catch (error) {
+        console.error('Erreur lors du chargement des actualités:', error);
+        setAllNews([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadNews();
+  }, []);
 
   // Filtrer les actualités
   const filteredNews = useMemo(() => {
@@ -45,6 +59,17 @@ const ReaderPage = () => {
     });
     return stats;
   }, [allNews]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Chargement des actualités validées...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">

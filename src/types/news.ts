@@ -1,4 +1,3 @@
-
 export interface NewsItem {
   id: string;
   title: string;
@@ -7,6 +6,11 @@ export interface NewsItem {
   status: 'pending' | 'approved' | 'rejected';
   createdAt: string;
   aiClassification: NewsTheme;
+  source?: {
+    file: string;
+    publisher: string;
+    author: string;
+  };
 }
 
 export type NewsTheme = 
