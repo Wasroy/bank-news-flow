@@ -2,10 +2,8 @@ import Fastify from 'fastify';
 import { BlobServiceClient } from '@azure/storage-blob';
 import { DocumentAnalysisClient, AzureKeyCredential } from '@azure/ai-form-recognizer';
 import { AzureOpenAI } from 'openai';
-// import { AzureKeyCredential } from '@azure/openai';
 import dotenv from 'dotenv';
 import fs from 'node:fs';
-import path from 'node:path';
 
 dotenv.config()
 const fastify = Fastify({
