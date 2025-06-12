@@ -1,11 +1,7 @@
 import { useState } from 'react';
 import { NewsItem, NewsTheme } from '../types/news';
-<<<<<<< HEAD
 import { getRealActualNews } from '../data/RealActual'; // Importez la nouvelle fonction
 import { getWeeklyDigest } from '../../scripts/getWeeklyDigest'; 
-=======
-import { getRealActualNews } from '../data/RealActual';
->>>>>>> 764631578c33f711180e9827354525fb708e2dd5
 import NewsCard from './NewsCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
