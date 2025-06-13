@@ -56,8 +56,15 @@ const NewsCard = ({
     <Card className="hover:shadow-md transition-shadow duration-200">
       <CardHeader className="pb-3">
         <div className="flex justify-between items-start">
-          <CardTitle className="text-lg font-semibold text-gray-900 leading-tight">
-            {news.title}
+            <CardTitle className="text-lg font-semibold text-gray-900 leading-tight">
+            <a
+              href={news.url || '#'}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline"
+            >
+              {news.title}
+            </a>
           </CardTitle>
           <div className="flex flex-col items-end space-y-2">
             <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${THEME_COLORS[news.theme]}`}>

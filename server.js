@@ -114,7 +114,8 @@ async function processAllPdfs() {
 	const output = [];
 	let pdfCount = 0; // Changed from const to let
 
-	for await (const blob of containerClient.listBlobsFlat()) {
+	for await (const blob of containerClient
+		.listBlobsFlat({prefix: 'articles_a_tester'})) {
 		if (!blob.name.toLowerCase().endsWith(".pdf")) continue;
 		
 		// Get a blob client for the specific blob

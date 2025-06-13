@@ -9,6 +9,7 @@ export interface NewsItem {
   status: 'pending' | 'approved' | 'rejected';
   createdAt: string;
   aiClassification: NewsTheme;
+  url?: string;
 }
 
 export type NewsTheme = 
