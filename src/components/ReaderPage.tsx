@@ -83,7 +83,7 @@ const ReaderPage = () => {
         <div className="flex justify-between items-start">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              Actualités Financières n°992
+              Actualités Financières n°1021
             </h1>
             <p className="text-gray-600">
               Consultez les dernières actualités du secteur bancaire et financier validées par la Banque de France.

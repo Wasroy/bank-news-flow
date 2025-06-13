@@ -62,13 +62,13 @@ async function getTextFromPDF(blobUrl) {
 async function cleanText(text) {
 	console.log("📝 Original text:", text);
 	const response = await client.chat.completions.create({
-    messages: [
-      { role:"system", content: "You're an AI assistant that helps French financial workers archive industry news. You'll receive each time, one or two pages of magazine transformed in pure text by Document Intelligence with layout-aware parsing. First, concatenate lines to assemble the text. Then, find the publish date, author names, magazine's name, to attach in the beginning of your answer. Return the cleaned text." },
-      { role:"user", content: `Text: ${text}` }
-    ],
-    	max_completion_tokens: 4096,
+		messages: [
+		  { role:"system", content: "You're an AI assistant that helps French financial workers archive industry news. You'll receive each time, one or two pages of magazine transformed in pure text by Document Intelligence with layout-aware parsing. First, concatenate lines to assemble the text. Then, find the publish date, author names, magazine's name, to attach in the beginning of your answer. Return the cleaned text." },
+		  { role:"user", content: `Text: ${text}` }
+		],
+		max_completion_tokens: 8192, // Increased for handling larger magazine content
 		model: AZURE_OPENAI_API_VERSION
-  });
+	});
     // parse the response to json
     let cleanedText = response.choices[0].message.content;
     if (!cleanedText) {
@@ -85,7 +85,7 @@ async function getMetadataFromText(text) {
       { role:"system", content: "You're an AI assistant that helps French finance industry lawmakers summarize industry news. You'll receive a text of an article related to the financial/bank/insurance industry. While ensuring that your answer comes from the text given, take into account possible missing text / scanning recognition errors. Your task: Find the 'title' (remove titre de rubrique), the 'author', the 'date' of publication in YYYY-MM-DD format (or the first of the month if it is not exact day), the 'publisher', and the 'abstract' (usually a paragraph of ~3 sentence under the title, if it's in English please translate it into French), the 'category' (choose the most relevant one among: Indicateurs économiques, Citations ACPR, Supervision & Régulation, Actualité Secteur Assurance, Actualité Secteur Banque, Mutualité & Prévoyance. Actualité financière, Cryptomonnaies, Questions macroéconomiques, Comptabilité, Immobilier, Environnement professionnel). If you are not sure about an attribute, fill in “N/A”. Return this metadata in one json object (without any leading or trailing quote characters)." },
       { role:"user", content: `Text: ${text}` }
     ],
-    	max_completion_tokens: 4096,
+    	max_completion_tokens: 8192,
 		model: AZURE_OPENAI_API_VERSION
   });
     // parse the response to json

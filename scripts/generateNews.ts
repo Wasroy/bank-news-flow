@@ -23,6 +23,7 @@ async function main() {
     if (article.error) continue;
 
     const meta = article.metadata;
+    const filename = article.file;
 
     // Limiter la taille du résumé pour éviter dépassement
     const abstract = (meta.abstract || '').slice(0, 1000);
@@ -32,6 +33,7 @@ Reformate cet article JSON au format indiqué. Répond uniquement avec un objet 
 
 Données :
 {
+  "id": "${filename}",
   "title": "${meta.title}",
   "abstract": "${abstract}",
   "author": "${Array.isArray(meta.author) ? meta.author.join(', ') : meta.author || 'N/A'}",
@@ -42,7 +44,7 @@ Données :
 
 Format souhaité :
 {
-  "id": "${index}",
+  "id": "...",
   "title": "...",
   "content": "...",
   "author": "...",

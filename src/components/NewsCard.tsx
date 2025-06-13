@@ -58,7 +58,7 @@ const NewsCard = ({
         <div className="flex justify-between items-start">
             <CardTitle className="text-lg font-semibold text-gray-900 leading-tight">
             <a
-              href={news.url || '#'}
+              href={news.url || 'https://www.argusdelassurance.com/'}
               target="_blank"
               rel="noopener noreferrer"
               className="hover:underline"
