@@ -63,7 +63,7 @@ async function cleanText(text) {
 	console.log("📝 Original text:", text);
 	const response = await client.chat.completions.create({
     messages: [
-      { role:"system", content: "You're an AI assistant that helps magazine archive staff check articles. You'll receive each time, one or two pages of magazine transformed in pure text by Document Intelligence with layout-aware parsing. As a result of magazine's layout, sometimes parts of different article or ads show up on the same page. For example, a page can contains: header -> the ending of article A -> then full, main article B -> then the beginning of article C -> footer.\nIn the text given, you should first contextually recognize texts related to the ONE MAIN article, if you found multiple themed section, the main article should be the section taking up the most text. If, contextually, no multiple articles found in the text, don't do any modification, return the original text. Otherwise: Remove all lines related to other articles and ads, but you should still keep lines containing possibly publish date, author names, magazine's names. Return the cleaned text." },
+      { role:"system", content: "You're an AI assistant that helps French financial workers archive industry news. You'll receive each time, one or two pages of magazine transformed in pure text by Document Intelligence with layout-aware parsing. First, concatenate lines to assemble the text. Then, find the publish date, author names, magazine's name, to attach in the beginning of your answer. Return the cleaned text." },
       { role:"user", content: `Text: ${text}` }
     ],
     	max_completion_tokens: 4096,
@@ -82,7 +82,7 @@ async function cleanText(text) {
 async function getMetadataFromText(text) {
 	const response = await client.chat.completions.create({
     messages: [
-      { role:"system", content: "You're an AI assistant that helps French finance industry lawmakers summarize industry news. You'll receive the first two pages of text from an article related to the financial industry, converted by Azure Document Intelligence by layout-aware parsing of the PDF (so you have to take into account the correction of possible information noise). For the sake of information accuracy, while ensuring that your answer comes from the content of the article, try to find the title of this article (usually a sentence with a subject and a predicate), the author (there may be more than one), the date of publication in YYYY-MM-DD format (or the first of the month if it is not exact day), the publisher, and the abstract (usually a paragraph under the title, if the article is in English please translate it into French), the category (choose the most relevant one among: Indicateurs économiques, Citations ACPR, Supervision & Régulation, Actualité Secteur Assurance, Actualité Secteur Banque, Mutualité & Prévoyance. Actualité financière, Cryptomonnaies, Questions macroéconomiques, Comptabilité, Immobilier, Environnement professionnel). Double check the title and make sure it correponds to the central idea of the text. If you are not sure about an attribute, fill in “N/A”. Return this metadata in one json object (without any leading or trailing quote characters)." },
+      { role:"system", content: "You're an AI assistant that helps French finance industry lawmakers summarize industry news. You'll receive a text of an article related to the financial/bank/insurance industry. While ensuring that your answer comes from the text given, take into account possible missing text / scanning recognition errors. Your task: Find the 'title' (remove titre de rubrique), the 'author', the 'date' of publication in YYYY-MM-DD format (or the first of the month if it is not exact day), the 'publisher', and the 'abstract' (usually a paragraph of ~3 sentence under the title, if it's in English please translate it into French), the 'category' (choose the most relevant one among: Indicateurs économiques, Citations ACPR, Supervision & Régulation, Actualité Secteur Assurance, Actualité Secteur Banque, Mutualité & Prévoyance. Actualité financière, Cryptomonnaies, Questions macroéconomiques, Comptabilité, Immobilier, Environnement professionnel). If you are not sure about an attribute, fill in “N/A”. Return this metadata in one json object (without any leading or trailing quote characters)." },
       { role:"user", content: `Text: ${text}` }
     ],
     	max_completion_tokens: 4096,
@@ -130,8 +130,9 @@ async function processAllPdfs() {
 
 		try {
 			const text = await getTextFromPDF(sasUrl);
-			const cleanedText = await cleanText(text);
+			const cleanedText = await cleanText(text); // works not as expected
 			const metadata = await getMetadataFromText(cleanedText);
+			// const metadata = await getMetadataFromText(text);
 			output.push({ file: blob.name, metadata: metadata });
 		} catch (err) {
 			console.error(`Failed to process ${blob.name}:`, err.message);

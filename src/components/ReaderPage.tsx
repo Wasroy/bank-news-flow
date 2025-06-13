@@ -5,7 +5,7 @@ import NewsCard from './NewsCard';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Filter, Search } from 'lucide-react';
+import { Filter, RefreshCw, Search, SortAsc } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 
 const ReaderPage = () => {
@@ -36,7 +36,37 @@ const ReaderPage = () => {
 
     return filtered;
   }, [news, selectedTheme, searchTerm, sortBy]);
-
+  
+  const handleExportPDF = () => {
+      // Replace this with the actual HTML you want to export
+    const htmlContent = document.documentElement.outerHTML;
+    
+    fetch('http://localhost:3000/export', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ html: htmlContent })
+    })
+      .then(response => {
+        if (!response.ok) throw new Error('Network response was not ok');
+        return response.blob();
+      })
+      .then(blob => {
+        // Create a link to download the PDF
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'newsletter.pdf';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+      })
+      .catch(error => {
+        console.error('Error exporting PDF:', error);
+      });
+  }
   // Statistiques par thème
   const themeStats = useMemo(() => {
     const stats: Record<NewsTheme, number> = {} as Record<NewsTheme, number>;
@@ -49,16 +79,24 @@ const ReaderPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* En-tête */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Actualités Financières n°992
-          </h1>
-          <p className="text-gray-600">
-            Consultez les dernières actualités du secteur bancaire et financier validées par la Banque de France.
-          </p>
+        {/* En-tête avec bouton d'export */}
+        <div className="flex justify-between items-start">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              Actualités Financières n°992
+            </h1>
+            <p className="text-gray-600">
+              Consultez les dernières actualités du secteur bancaire et financier validées par la Banque de France.
+            </p>
+          </div>
+          <Button
+            onClick={handleExportPDF}
+            className="bg-green-600 hover:bg-green-700 text-white ml-2"
+            size="lg">
+            <RefreshCw className="h-5 w-5 mr-2" />
+            Exporter la newsletter
+          </Button>
         </div>
-
         {/* Barre de recherche */}
         <Card className="mb-6">
           <CardContent className="pt-6">
@@ -115,7 +153,7 @@ const ReaderPage = () => {
         <Card className="mb-8">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
-              <Filter className="h-5 w-5" />
+              <SortAsc className="h-5 w-5" />
               <span>Trier par</span>
             </CardTitle>
           </CardHeader>
@@ -169,7 +207,7 @@ const ReaderPage = () => {
         ) : (
           <div className="grid gap-6">
             {filteredNews.map((item) => (
-              <NewsCard
+              <NewsCard key={item.id}
                 news={item}
                 isAdmin={false}
               />

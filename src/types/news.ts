@@ -12,32 +12,32 @@ export interface NewsItem {
 }
 
 export type NewsTheme = 
-  | 'Indicateurs économiques'
-  | 'Citations ACPR'
-  | 'Supervision & Régulation'
   | 'Actualité Secteur Assurance'
   | 'Actualité Secteur Banque'
-  | 'Mutualité & Prévoyance'
   | 'Actualité financière'
+  | 'Citations ACPR'
   | 'Cryptomonnaies'
-  | 'Questions macroéconomiques'
   | 'Comptabilité'
+  | 'Environnement professionnel'
   | 'Immobilier'
-  | 'Environnement professionnel';
+  | 'Indicateurs économiques'
+  | 'Mutualité & Prévoyance'
+  | 'Questions macroéconomiques'
+  | 'Supervision & Régulation';
 
 export const NEWS_THEMES: NewsTheme[] = [
-  'Indicateurs économiques',
-  'Citations ACPR',
-  'Supervision & Régulation',
   'Actualité Secteur Assurance',
   'Actualité Secteur Banque',
-  'Mutualité & Prévoyance',
   'Actualité financière',
+  'Citations ACPR',
   'Cryptomonnaies',
-  'Questions macroéconomiques',
   'Comptabilité',
+  'Environnement professionnel',
   'Immobilier',
-  'Environnement professionnel'
+  'Indicateurs économiques',
+  'Mutualité & Prévoyance',
+  'Questions macroéconomiques',
+  'Supervision & Régulation'
 ];
 
 export const THEME_COLORS: Record<NewsTheme, string> = {
